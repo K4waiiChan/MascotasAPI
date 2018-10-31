@@ -2,7 +2,7 @@
 
 namespace PetsAPI.Models
 {
-    public class Login
+    public class LoginModel
     {
         [Required]
         public string UserNameEmail { get; set; }

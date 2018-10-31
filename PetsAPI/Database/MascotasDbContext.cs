@@ -6,7 +6,7 @@ using PetsAPI.Models;
 
 namespace PetsAPI.Database
 {
-    public class MascotasDbContext: IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
+    public class MascotasDbContext : IdentityDbContext<User, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         /// <summary>
         /// DataBase initilizador

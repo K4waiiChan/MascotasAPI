@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +29,7 @@ namespace PetsAPI.Controllers
 
         [HttpPost, Route("signin")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(Login model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
