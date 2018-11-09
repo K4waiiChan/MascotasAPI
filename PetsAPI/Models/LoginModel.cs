@@ -5,7 +5,7 @@ namespace PetsAPI.Models
     public class LoginModel
     {
         [Required]
-        public string UserNameEmail { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

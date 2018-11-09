@@ -27,18 +27,18 @@ namespace PetsAPI.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost, Route("signin")]
+        [HttpPost, Route("api/auth")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginModel model, string returnUrl = null)
+        public async Task<IActionResult> Login([FromBody]LoginModel model, string returnUrl = null)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { message = "Login model invalid" });
             }
-            var user = await _userManager.FindByNameAsync(model.UserNameEmail);
+            var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null)
             {
-                user = await _userManager.FindByEmailAsync(model.UserNameEmail);
+                user = await _userManager.FindByEmailAsync(model.UserName);
                 if (user == null)
                 {
                     return BadRequest(new { message = "User doesn't exist" });
