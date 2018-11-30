@@ -23,8 +23,7 @@ namespace PetsAPI.Models
         [StringLength(50, ErrorMessage = "Especie no puede tener mas de 50 caracteres.")]
         public string Especie { get; set; }
         [Required]
-        [StringLength(50, ErrorMessage = "Edad no puede tener mas de 50 caracteres.")]
-        public string Edad { get; set; }
+        public int Edad { get; set; }
         [Required]
         [StringLength(50, ErrorMessage = "Sexo no puede tener mas de 50 caracteres.")]
         public string Sexo { get; set; }
@@ -35,7 +34,7 @@ namespace PetsAPI.Models
         [Required]
         [DataType(DataType.ImageUrl)]
         public string Imagen { get; set; }
-        public bool Estado { get; set; }
+        public string Estado { get; set; }
         public DateTime Created_at { get; set; }
         public DateTime Updated_at { get; set; }
     }

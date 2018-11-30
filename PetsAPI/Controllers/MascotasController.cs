@@ -22,9 +22,10 @@ namespace PetsAPI.Controllers
 
         // GET: api/Mascotas
         [HttpGet]
-        public IEnumerable<Mascota> GetMascotas()
+        public IEnumerable<Mascota> GetMascotas(string especie = "", string raza = "", string sexo = "", int? edadMax = 100, int? edadMin = 0)
         {
-            return _context.Mascotas;
+
+            return from mascota in this._context.Mascotas where mascota.Raza.Contains(raza) && mascota.Especie.Contains(especie) && mascota.Sexo.Contains(sexo) && mascota.Edad >= edadMin && mascota.Edad < edadMax select mascota;
         }
 
         // GET: api/Mascotas/5
@@ -85,7 +86,7 @@ namespace PetsAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostMascota([FromBody] Mascota mascota)
         {
-            mascota.Estado = true;
+            mascota.Estado = "Disponible";
             mascota.Created_at = DateTime.Today;
             mascota.Updated_at = DateTime.Today;
 

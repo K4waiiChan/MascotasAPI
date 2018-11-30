@@ -10,7 +10,7 @@ using PetsAPI.Database;
 namespace PetsAPI.Migrations
 {
     [DbContext(typeof(MascotasDbContext))]
-    [Migration("20181109015708_pets")]
+    [Migration("20181128072147_pets")]
     partial class pets
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,9 +104,7 @@ namespace PetsAPI.Migrations
 
                     b.Property<string>("Descripcion");
 
-                    b.Property<string>("Edad")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                    b.Property<int>("Edad");
 
                     b.Property<string>("Enfermedades")
                         .IsRequired();
@@ -115,7 +113,7 @@ namespace PetsAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<bool>("Estado");
+                    b.Property<string>("Estado");
 
                     b.Property<string>("Imagen")
                         .IsRequired();
