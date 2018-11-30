@@ -10,7 +10,7 @@ using PetsAPI.Database;
 namespace PetsAPI.Migrations
 {
     [DbContext(typeof(MascotasDbContext))]
-    [Migration("20181128072147_pets")]
+    [Migration("20181130011536_pets")]
     partial class pets
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
