@@ -10,14 +10,14 @@ using PetsAPI.Database;
 namespace PetsAPI.Migrations
 {
     [DbContext(typeof(MascotasDbContext))]
-    [Migration("20181128072147_pets")]
-    partial class pets
+    [Migration("20181130170044_solcitud")]
+    partial class solcitud
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -161,6 +161,53 @@ namespace PetsAPI.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("PetsAPI.Models.SolicitudAdopcion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CedulaIdentidad")
+                        .IsRequired();
+
+                    b.Property<string>("Correo")
+                        .IsRequired();
+
+                    b.Property<string>("Departamento");
+
+                    b.Property<string>("Direccion");
+
+                    b.Property<string>("Estado");
+
+                    b.Property<string>("EstadoCivil");
+
+                    b.Property<string>("EstadoMascotasAnteriores");
+
+                    b.Property<string>("EstadoSolicitud");
+
+                    b.Property<string>("MascotasActuales");
+
+                    b.Property<string>("MascotasAnteriormente");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Ocupacion");
+
+                    b.Property<string>("Provincia");
+
+                    b.Property<string>("RazonAdopcion");
+
+                    b.Property<string>("RazonMascotasEsterilizadas");
+
+                    b.Property<string>("VisitaPeriodicaDomicilio");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Solicitudes");
                 });
 
             modelBuilder.Entity("PetsAPI.Models.User", b =>

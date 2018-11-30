@@ -82,8 +82,27 @@ namespace PetsAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Mascotas
-        [HttpPost]
+		[HttpPut("{id}/estado")]
+		public async Task<IActionResult> PutEstadoMascota([FromRoute] int id, [FromBody] EditarEstadoMascotaModel data)
+		{
+			try
+			{
+				this._context.Mascotas.Find(id).Estado = data.Estado;
+				foreach (SolicitudAdopcion solicitud in this._context.Solicitudes) {
+					solicitud.Estado = "espera";
+				}
+				this._context.Solicitudes.Find(data.IdSolicitud).Estado = "aceptada";
+				await _context.SaveChangesAsync();
+				return Ok();
+			}
+			catch 
+			{
+				return NotFound();
+			}
+		}
+
+		// POST: api/Mascotas
+		[HttpPost]
         public async Task<IActionResult> PostMascota([FromBody] Mascota mascota)
         {
             mascota.Estado = "Disponible";
