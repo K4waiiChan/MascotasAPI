@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PetsAPI.Migrations
 {
-    public partial class solcitud : Migration
+    public partial class pets : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,34 +47,6 @@ namespace PetsAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Solicitudes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(maxLength: 50, nullable: false),
-                    CedulaIdentidad = table.Column<string>(nullable: false),
-                    Correo = table.Column<string>(nullable: false),
-                    Departamento = table.Column<string>(nullable: true),
-                    Provincia = table.Column<string>(nullable: true),
-                    Direccion = table.Column<string>(nullable: true),
-                    Ocupacion = table.Column<string>(nullable: true),
-                    EstadoCivil = table.Column<string>(nullable: true),
-                    EstadoSolicitud = table.Column<string>(nullable: true),
-                    RazonAdopcion = table.Column<string>(nullable: true),
-                    MascotasActuales = table.Column<string>(nullable: true),
-                    RazonMascotasEsterilizadas = table.Column<string>(nullable: true),
-                    MascotasAnteriormente = table.Column<string>(nullable: true),
-                    EstadoMascotasAnteriores = table.Column<string>(nullable: true),
-                    VisitaPeriodicaDomicilio = table.Column<string>(nullable: true),
-                    Estado = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Solicitudes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -97,6 +69,41 @@ namespace PetsAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Solicitudes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(nullable: false),
+                    CedulaIdentidad = table.Column<string>(nullable: false),
+                    Correo = table.Column<string>(nullable: false),
+                    Departamento = table.Column<string>(nullable: true),
+                    Provincia = table.Column<string>(nullable: true),
+                    Direccion = table.Column<string>(nullable: true),
+                    Ocupacion = table.Column<string>(nullable: true),
+                    EstadoCivil = table.Column<string>(nullable: true),
+                    EstadoSolicitud = table.Column<string>(nullable: true),
+                    RazonAdopcion = table.Column<string>(nullable: true),
+                    MascotasActuales = table.Column<string>(nullable: true),
+                    RazonMascotasEsterilizadas = table.Column<string>(nullable: true),
+                    MascotasAnteriormente = table.Column<string>(nullable: true),
+                    EstadoMascotasAnteriores = table.Column<string>(nullable: true),
+                    VisitaPeriodicaDomicilio = table.Column<string>(nullable: true),
+                    Estado = table.Column<string>(nullable: true),
+                    IdMascota = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Solicitudes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Solicitudes_Mascotas_IdMascota",
+                        column: x => x.IdMascota,
+                        principalTable: "Mascotas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,6 +225,11 @@ namespace PetsAPI.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Solicitudes_IdMascota",
+                table: "Solicitudes",
+                column: "IdMascota");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
                 table: "UserClaims",
                 column: "UserId");
@@ -248,9 +260,6 @@ namespace PetsAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Mascotas");
-
-            migrationBuilder.DropTable(
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
@@ -267,6 +276,9 @@ namespace PetsAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Mascotas");
 
             migrationBuilder.DropTable(
                 name: "Roles");

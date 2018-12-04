@@ -9,6 +9,5 @@ namespace PetsAPI.Models
 	{
 		public string Estado { get; set; }
 		public int IdMascota { get; set; }
-		public int IdSolicitud { get; set; }
 	}
 }

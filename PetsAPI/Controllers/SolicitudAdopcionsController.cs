@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetsAPI.Database;
 using PetsAPI.Models;
+using PetsAPI.Services;
 
 namespace PetsAPI.Controllers
 {
@@ -15,9 +16,11 @@ namespace PetsAPI.Controllers
     public class SolicitudAdopcionsController : ControllerBase
     {
         private readonly MascotasDbContext _context;
+        private readonly EmailService emailService;
 
         public SolicitudAdopcionsController(MascotasDbContext context)
         {
+            this.emailService = new EmailService();
             _context = context;
         }
 
@@ -100,7 +103,7 @@ namespace PetsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-			solicitudAdopcion.Estado = "creado";
+			solicitudAdopcion.Estado = "creada";
             _context.Solicitudes.Add(solicitudAdopcion);
             await _context.SaveChangesAsync();
 
@@ -131,6 +134,69 @@ namespace PetsAPI.Controllers
         private bool SolicitudAdopcionExists(int id)
         {
             return _context.Solicitudes.Any(e => e.Id == id);
+        }
+
+        [HttpPut("{id}/estado")]
+        public IActionResult PutEstadoSolicitud([FromRoute] int id, [FromBody] EditarEstadoSolicitudModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != data.IdSolicitud)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                SolicitudAdopcion solicitudAdopcion = this._context.Solicitudes.Find(data.IdSolicitud);
+                if (data.Estado == "aceptada")
+                {
+                    this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "reservada";
+                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "espera");
+                    this.emailService.SendnEmail(solicitudAdopcion.Correo, "Felicidades tu solicitud de adopcion a sido aceptada, la mascota que solicitaste estara reservada para ti durante 1 semana. Recoge a tu nueva mascota lo mas antes posible Saludos.");
+                }
+                else if (data.Estado == "rechazada" && solicitudAdopcion.Estado == "creada")
+                {
+                    this.RechazarSolicitud(solicitudAdopcion.Correo);
+                }
+                else if (data.Estado == "rechazada" && solicitudAdopcion.Estado == "aceptada")
+                {
+                    this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "disponible";
+                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "creada");
+                    this.RechazarSolicitud(solicitudAdopcion.Correo);
+                }
+                else if (data.Estado == "compleatada")
+                {
+                    this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "adoptada";
+                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "rechazada");
+                }
+                solicitudAdopcion.Estado = data.Estado;
+                this._context.SaveChanges();
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        private void CambiarEstadoDeSolicitudes(int idMascota, string estado)
+        {
+            foreach (SolicitudAdopcion solicitud in (from solicitud in this._context.Solicitudes where solicitud.IdMascota == idMascota && solicitud.Estado != "rechazada" select solicitud))
+            {
+                solicitud.Estado = estado;
+                if (estado == "rechazada")
+                {
+                    this.RechazarSolicitud(solicitud.Correo);
+                }
+            }
+        }
+
+        private void RechazarSolicitud(string correo)
+        {
+            this.emailService.SendnEmail(correo, "Sentimos mucho darte esta noticia pero tu solicitud de adopcion a sido rechazada, quizas llenaste algun campo mal. Intenta mandar una nueva solicitud  o adoptar otra mascotas. Saludos ");
         }
     }
 }

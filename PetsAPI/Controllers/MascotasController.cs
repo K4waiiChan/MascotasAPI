@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetsAPI.Database;
 using PetsAPI.Models;
+using PetsAPI.Services;
+
 
 namespace PetsAPI.Controllers
 {
@@ -22,10 +24,10 @@ namespace PetsAPI.Controllers
 
         // GET: api/Mascotas
         [HttpGet]
-        public IEnumerable<Mascota> GetMascotas(string especie = "", string raza = "", string sexo = "", int? edadMax = 100, int? edadMin = 0)
+        public IEnumerable<Mascota> GetMascotas(string especie = "", string raza = "", string sexo = "", int edadMax = 100, int edadMin = 0, string estado="disponible")
         {
 
-            return from mascota in this._context.Mascotas where mascota.Raza.Contains(raza) && mascota.Especie.Contains(especie) && mascota.Sexo.Contains(sexo) && mascota.Edad >= edadMin && mascota.Edad < edadMax select mascota;
+            return from mascota in this._context.Mascotas where mascota.Estado == estado && mascota.Raza.Contains(raza) && mascota.Especie.Contains(especie) && mascota.Sexo.Contains(sexo) && mascota.Edad >= edadMin && mascota.Edad < edadMax select mascota;
         }
 
         // GET: api/Mascotas/5
@@ -85,13 +87,13 @@ namespace PetsAPI.Controllers
 		[HttpPut("{id}/estado")]
 		public async Task<IActionResult> PutEstadoMascota([FromRoute] int id, [FromBody] EditarEstadoMascotaModel data)
 		{
-			try
+            if (id != data.IdMascota)
+            {
+                return BadRequest();
+            }
+            try
 			{
-				this._context.Mascotas.Find(id).Estado = data.Estado;
-				foreach (SolicitudAdopcion solicitud in this._context.Solicitudes) {
-					solicitud.Estado = "espera";
-				}
-				this._context.Solicitudes.Find(data.IdSolicitud).Estado = "aceptada";
+                this._context.Mascotas.Find(id).Estado = data.Estado;
 				await _context.SaveChangesAsync();
 				return Ok();
 			}
@@ -105,7 +107,7 @@ namespace PetsAPI.Controllers
 		[HttpPost]
         public async Task<IActionResult> PostMascota([FromBody] Mascota mascota)
         {
-            mascota.Estado = "Disponible";
+            mascota.Estado = "disponible";
             mascota.Created_at = DateTime.Today;
             mascota.Updated_at = DateTime.Today;
 

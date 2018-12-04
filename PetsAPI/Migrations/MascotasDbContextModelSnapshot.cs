@@ -15,7 +15,7 @@ namespace PetsAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -185,13 +185,14 @@ namespace PetsAPI.Migrations
 
                     b.Property<string>("EstadoSolicitud");
 
+                    b.Property<int>("IdMascota");
+
                     b.Property<string>("MascotasActuales");
 
                     b.Property<string>("MascotasAnteriormente");
 
                     b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .IsRequired();
 
                     b.Property<string>("Ocupacion");
 
@@ -204,6 +205,8 @@ namespace PetsAPI.Migrations
                     b.Property<string>("VisitaPeriodicaDomicilio");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdMascota");
 
                     b.ToTable("Solicitudes");
                 });
@@ -301,6 +304,14 @@ namespace PetsAPI.Migrations
                     b.HasOne("PetsAPI.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PetsAPI.Models.SolicitudAdopcion", b =>
+                {
+                    b.HasOne("PetsAPI.Models.Mascota", "Mascota")
+                        .WithMany()
+                        .HasForeignKey("IdMascota")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
