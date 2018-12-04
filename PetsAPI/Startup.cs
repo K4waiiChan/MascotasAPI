@@ -71,7 +71,7 @@ namespace PetsAPI
             }));
 
 			//var dbstring = ConfigurationExtensions.GetConnectionString(this.Configuration, "azuredb");
-			var dbstring = ConfigurationExtensions.GetConnectionString(this.Configuration, "azuredb");
+			var dbstring = ConfigurationExtensions.GetConnectionString(this.Configuration, "localdb");
 			services.AddDbContext<MascotasDbContext>(options => options.UseSqlServer(dbstring));
             services.AddMvc();
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
