@@ -161,6 +161,56 @@ namespace PetsAPI.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("PetsAPI.Models.SolicitudAdopcion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CedulaIdentidad")
+                        .IsRequired();
+
+                    b.Property<string>("Correo")
+                        .IsRequired();
+
+                    b.Property<string>("Departamento");
+
+                    b.Property<string>("Direccion");
+
+                    b.Property<string>("Estado");
+
+                    b.Property<string>("EstadoCivil");
+
+                    b.Property<string>("EstadoMascotasAnteriores");
+
+                    b.Property<string>("EstadoSolicitud");
+
+                    b.Property<int>("IdMascota");
+
+                    b.Property<string>("MascotasActuales");
+
+                    b.Property<string>("MascotasAnteriormente");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.Property<string>("Ocupacion");
+
+                    b.Property<string>("Provincia");
+
+                    b.Property<string>("RazonAdopcion");
+
+                    b.Property<string>("RazonMascotasEsterilizadas");
+
+                    b.Property<string>("VisitaPeriodicaDomicilio");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdMascota");
+
+                    b.ToTable("Solicitudes");
+                });
+
             modelBuilder.Entity("PetsAPI.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -254,6 +304,14 @@ namespace PetsAPI.Migrations
                     b.HasOne("PetsAPI.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PetsAPI.Models.SolicitudAdopcion", b =>
+                {
+                    b.HasOne("PetsAPI.Models.Mascota", "Mascota")
+                        .WithMany()
+                        .HasForeignKey("IdMascota")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

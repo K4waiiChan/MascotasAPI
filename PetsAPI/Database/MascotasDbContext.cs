@@ -73,6 +73,9 @@ namespace PetsAPI.Database
         /// DataBase configuration
         /// </summary>
         /// <param name="optionsBuilder"></param>
+		/// 
+
+		public DbSet<SolicitudAdopcion> Solicitudes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
