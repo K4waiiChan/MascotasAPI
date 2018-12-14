@@ -68,14 +68,10 @@ namespace PetsAPI.Database
         }
 
         public DbSet<Mascota> Mascotas { get; set; }
-
-        /// <summary>
-        /// DataBase configuration
-        /// </summary>
-        /// <param name="optionsBuilder"></param>
-		/// 
-
+        public DbSet<ClinicaVeterianaria> Clinicas { get; set; }
 		public DbSet<SolicitudAdopcion> Solicitudes { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
         }
