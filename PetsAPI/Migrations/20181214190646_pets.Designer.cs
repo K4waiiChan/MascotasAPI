@@ -10,14 +10,14 @@ using PetsAPI.Database;
 namespace PetsAPI.Migrations
 {
     [DbContext(typeof(MascotasDbContext))]
-    [Migration("20181204200914_pets")]
+    [Migration("20181214190646_pets")]
     partial class pets
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -92,6 +92,34 @@ namespace PetsAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserTokens");
+                });
+
+            modelBuilder.Entity("PetsAPI.Models.ClinicaVeterianaria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Dias")
+                        .IsRequired();
+
+                    b.Property<string>("Direccion")
+                        .IsRequired();
+
+                    b.Property<string>("Especialidades")
+                        .IsRequired();
+
+                    b.Property<string>("Horario")
+                        .IsRequired();
+
+                    b.Property<string>("Logo");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clinicas");
                 });
 
             modelBuilder.Entity("PetsAPI.Models.Mascota", b =>

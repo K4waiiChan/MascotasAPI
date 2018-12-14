@@ -14,4 +14,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20181204200914_pets.cs" />
+  </ItemGroup>
 </Project>
