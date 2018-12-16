@@ -2,66 +2,66 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PetsAPI.Database;
 using PetsAPI.Models;
 
-
 namespace PetsAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class ClinicasVeterinariasController : Controller
+    [ApiController]
+    public class ClinicasVeterianariasController : ControllerBase
     {
         private readonly MascotasDbContext _context;
 
-        public ClinicasVeterinariasController(MascotasDbContext context)
+        public ClinicasVeterianariasController(MascotasDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Mascotas
+        // GET: api/ClinicasVeterianarias
         [HttpGet]
-        public IEnumerable<ClinicaVeterianaria> GetClinicasVeterianarias()
+        public IEnumerable<ClinicaVeterianaria> GetClinicas()
         {
-            return this._context.Clinicas;
-
+            return _context.Clinicas;
         }
 
-        // GET: api/Mascotas/5
+        // GET: api/ClinicasVeterianarias/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetClinicaVeterinaria([FromRoute] int id)
+        public async Task<IActionResult> GetClinicaVeterianaria([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var clinica = await _context.Clinicas.FindAsync(id);
+            var clinicaVeterianaria = await _context.Clinicas.FindAsync(id);
 
-            if (clinica == null)
+            if (clinicaVeterianaria == null)
             {
                 return NotFound();
             }
 
-            return Ok(clinica);
+            return Ok(clinicaVeterianaria);
         }
 
-        // PUT: api/Mascotas/5
+        // PUT: api/ClinicasVeterianarias/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutClinicaVeterinaria([FromRoute] int id, [FromBody] ClinicaVeterianaria clinica)
+        public async Task<IActionResult> PutClinicaVeterianaria([FromRoute] int id, [FromBody] ClinicaVeterianaria clinicaVeterianaria)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != clinica.Id)
+            if (id != clinicaVeterianaria.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(clinica).State = EntityState.Modified;
+            _context.Entry(clinicaVeterianaria).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +69,7 @@ namespace PetsAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClinicaExists(id))
+                if (!ClinicaVeterianariaExists(id))
                 {
                     return NotFound();
                 }
@@ -82,47 +82,45 @@ namespace PetsAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Mascotas
+        // POST: api/ClinicasVeterianarias
         [HttpPost]
-        public async Task<IActionResult> PostClinica([FromBody] ClinicaVeterianaria clinica)
+        public async Task<IActionResult> PostClinicaVeterianaria([FromBody] ClinicaVeterianaria clinicaVeterianaria)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Clinicas.Add(clinica);
+            _context.Clinicas.Add(clinicaVeterianaria);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMascota", new { id = clinica.Id }, clinica);
+            return CreatedAtAction("GetClinicaVeterianaria", new { id = clinicaVeterianaria.Id }, clinicaVeterianaria);
         }
 
-        // DELETE: api/Mascotas/5
+        // DELETE: api/ClinicasVeterianarias/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClinica([FromRoute] int id)
+        public async Task<IActionResult> DeleteClinicaVeterianaria([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var clinica = await _context.Clinicas.FindAsync(id);
-            if (clinica == null)
+            var clinicaVeterianaria = await _context.Clinicas.FindAsync(id);
+            if (clinicaVeterianaria == null)
             {
                 return NotFound();
             }
 
-            _context.Clinicas.Remove(clinica);
+            _context.Clinicas.Remove(clinicaVeterianaria);
             await _context.SaveChangesAsync();
 
-            return Ok(clinica);
+            return Ok(clinicaVeterianaria);
         }
 
-        private bool ClinicaExists(int id)
+        private bool ClinicaVeterianariaExists(int id)
         {
             return _context.Clinicas.Any(e => e.Id == id);
         }
-
     }
 }

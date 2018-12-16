@@ -187,6 +187,14 @@ namespace PetsAPI.Controllers
             foreach (SolicitudAdopcion solicitud in (from solicitud in this._context.Solicitudes where solicitud.IdMascota == idMascota && solicitud.Estado != "rechazada" select solicitud))
             {
                 solicitud.Estado = estado;
+                if (estado == "espera")
+                {
+                    this.emailService.SendnEmail(solicitud.Correo, "Sentimos mucho darte esta noticia pero la mascota la cual quisiste a sido puesta en reserva para otro usuario, la reserva durara 1 semana, en caso de que la mascota no fuera recogida en ese lapso de tiempo el estado de reserva sera quitado y tu solicitud estara de nuevo activa y se te informara, si quieres cancelar la solicitud de adopcion puedes ponerte en contacto via telefono o directamente en nuestras oficinas Saludos ");
+                }
+                if (estado == "creada")
+                {
+                    this.emailService.SendnEmail(solicitud.Correo, "Buenas tardes, queriamos informarte que la mascota que solicitaste esta disponible nuevamente y tu solicitud volvera a entrar al proceso de seleccion, se te informara si tu solicitud es aceptada o rechazada tu solicitud se te informara. Si quieres cancelar la solicitud de adopcion puedes ponerte en contacto via telefono o directamente en nuestras oficinas. Saludos");
+                }
                 if (estado == "rechazada")
                 {
                     this.RechazarSolicitud(solicitud.Correo);
