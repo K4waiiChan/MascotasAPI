@@ -154,7 +154,7 @@ namespace PetsAPI.Controllers
                 if (data.Estado == "aceptada")
                 {
                     this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "reservada";
-                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "espera");
+                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "espera", solicitudAdopcion.Id);
                     this.emailService.SendnEmail(solicitudAdopcion.Correo, "Felicidades tu solicitud de adopcion a sido aceptada, la mascota que solicitaste estara reservada para ti durante 1 semana. Recoge a tu nueva mascota lo mas antes posible Saludos.");
                 }
                 else if (data.Estado == "rechazada" && solicitudAdopcion.Estado == "creada")
@@ -164,13 +164,13 @@ namespace PetsAPI.Controllers
                 else if (data.Estado == "rechazada" && solicitudAdopcion.Estado == "aceptada")
                 {
                     this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "disponible";
-                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "creada");
+                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "creada", solicitudAdopcion.Id);
                     this.RechazarSolicitud(solicitudAdopcion.Correo);
                 }
                 else if (data.Estado == "compleatada")
                 {
                     this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "adoptada";
-                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "rechazada");
+                    this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "rechazada", solicitudAdopcion.Id);
                 }
                 solicitudAdopcion.Estado = data.Estado;
                 this._context.SaveChanges();
@@ -182,9 +182,9 @@ namespace PetsAPI.Controllers
             }
         }
 
-        private void CambiarEstadoDeSolicitudes(int idMascota, string estado)
+        private void CambiarEstadoDeSolicitudes(int idMascota, string estado, int idSolicitud)
         {
-            foreach (SolicitudAdopcion solicitud in (from solicitud in this._context.Solicitudes where solicitud.IdMascota == idMascota && solicitud.Estado != "rechazada" select solicitud))
+            foreach (SolicitudAdopcion solicitud in (from solicitud in this._context.Solicitudes where solicitud.IdMascota == idMascota && solicitud.Estado != "rechazada" && solicitud.Id != idSolicitud select solicitud))
             {
                 solicitud.Estado = estado;
                 if (estado == "espera")
