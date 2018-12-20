@@ -18,6 +18,8 @@ namespace PetsAPI.Models
         [Required]
         public string Especialidades { get; set; }
         [Required]
+        public int Telefono { get; set; }
+        [Required]
         public string Horario { get; set; }
         [Required]
         public string Dias { get; set; }

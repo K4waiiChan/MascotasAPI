@@ -167,7 +167,7 @@ namespace PetsAPI.Controllers
                     this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "creada", solicitudAdopcion.Id);
                     this.RechazarSolicitud(solicitudAdopcion.Correo);
                 }
-                else if (data.Estado == "compleatada")
+                else if (data.Estado == "completada")
                 {
                     this._context.Mascotas.Find(solicitudAdopcion.IdMascota).Estado = "adoptada";
                     this.CambiarEstadoDeSolicitudes(solicitudAdopcion.IdMascota, "rechazada", solicitudAdopcion.Id);

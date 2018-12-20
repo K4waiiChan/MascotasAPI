@@ -10,14 +10,14 @@ using PetsAPI.Database;
 namespace PetsAPI.Migrations
 {
     [DbContext(typeof(MascotasDbContext))]
-    [Migration("20181214190646_pets")]
-    partial class pets
+    [Migration("20181220024008_petsa")]
+    partial class petsa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -116,6 +116,8 @@ namespace PetsAPI.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired();
+
+                    b.Property<int>("Telefono");
 
                     b.HasKey("Id");
 
